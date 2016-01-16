@@ -12,15 +12,20 @@ import android.widget.Toast;
 import com.example.JokeTeller;
 import com.jdelorenzo.jokedisplaylibrary.JokeDisplayActivity;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements OnJokeLoaded {
+
+    @Bind (R.id.progress_bar) android.support.v4.widget.ContentLoadingProgressBar loadingProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,13 +53,14 @@ public class MainActivity extends AppCompatActivity {
         JokeTeller jokeTeller = new JokeTeller();
         String jokeText = jokeTeller.getJoke();
         Toast.makeText(this, jokeText, Toast.LENGTH_SHORT).show();
+        loadingProgressBar.show();
+        new RetrieveJokeTask(this).execute(this);
+    }
 
-        new RetrieveJokeTask().execute(this);
-
+    public void onJokeLoaded(String jokeText) {
+        loadingProgressBar.hide();
         Intent intent = new Intent(this, JokeDisplayActivity.class);
         intent.putExtra(JokeDisplayActivity.ARG_JOKETEXT, jokeText);
         startActivity(intent);
     }
-
-
 }
