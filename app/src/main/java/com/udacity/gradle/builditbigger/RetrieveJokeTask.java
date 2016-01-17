@@ -13,7 +13,7 @@ import com.jdelorenzo.jokeendpoint.myApi.MyApi;
 
 import java.io.IOException;
 
-//task that sends a request to the Cloud Endpoint backednAPI
+//task that sends a request to the Cloud Endpoint backend API
 //https://github.com/GoogleCloudPlatform/gradle-appengine-templates/tree/master/HelloEndpoints
 public class RetrieveJokeTask extends AsyncTask<Context, Void, String> {
     private OnJokeLoaded listener;
