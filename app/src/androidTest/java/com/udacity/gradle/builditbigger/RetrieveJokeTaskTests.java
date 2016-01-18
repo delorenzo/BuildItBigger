@@ -11,37 +11,36 @@ public class RetrieveJokeTaskTests extends InstrumentationTestCase {
     private static String jokeTextResult;
     private static boolean called;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        called = false;
-        jokeTextResult = null;
-    }
-
     public final void testRetrieveJokeTask() throws Throwable {
         final CountDownLatch signal = new CountDownLatch(1);
 
+        final OnJokeLoaded mListener = new OnJokeLoaded() {
+            @Override
+            public void onJokeLoaded(String jokeText) {
+                called = true;
+                jokeTextResult = jokeText;
+                signal.countDown();
+            }
+        };
+
         //execute the async task on the UI thread
+        final RetrieveJokeTask myTask = new RetrieveJokeTask(mListener) {
+            @Override
+            protected void onPostExecute(String jokeText) {
+                super.onPostExecute(jokeText);
+                mListener.onJokeLoaded(jokeText);
+                signal.countDown();
+            }
+        };
         runTestOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new RetrieveJokeTask(new OnJokeLoaded() {
-                    @Override
-                    public void onJokeLoaded(String jokeText) {
-                        called = true;
-                        jokeTextResult = jokeText;
-                    }
-                }) {
-                    @Override
-                    protected void onPostExecute(String jokeText) {
-                        super.onPostExecute(jokeText);
-                        signal.countDown();
-                    }
-                }.execute();
+                myTask.execute(this);
             }
+
         });
 
-        signal.await(10, TimeUnit.SECONDS);
+        signal.await(30, TimeUnit.SECONDS);
         assertTrue(called);
         assertNotNull(jokeTextResult);
         Boolean stringIsEmpty = jokeTextResult.equals("");
