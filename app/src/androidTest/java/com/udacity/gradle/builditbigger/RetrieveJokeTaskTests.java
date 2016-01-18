@@ -36,6 +36,7 @@ public class RetrieveJokeTaskTests extends InstrumentationTestCase {
             @Override
             public void run() {
                 myTask.execute(this);
+
             }
 
         });
