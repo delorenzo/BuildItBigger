@@ -9,8 +9,9 @@
     <TextView
         android:padding="16dp"
         android:id="@+id/joke_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         tools:text="Joke Text"
         android:gravity="center_horizontal"/>
 </LinearLayout>
