@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/dHZdyyVD9Ai5-6YDAae2xOQ-doA\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/XfPcJZz3MNpxw18tTqWsbIFolnU\"",
  "discoveryVersion": "v1",
  "id": "myApi:v1",
  "name": "myApi",
@@ -81,6 +81,15 @@
      "type": "string"
     }
    }
+  },
+  "MyBean": {
+   "id": "MyBean",
+   "type": "object",
+   "properties": {
+    "data": {
+     "type": "string"
+    }
+   }
   }
  },
  "methods": {
@@ -90,6 +99,27 @@
    "httpMethod": "GET",
    "response": {
     "$ref": "Joke"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "sayHi": {
+   "id": "myApi.sayHi",
+   "path": "sayHi/{name}",
+   "httpMethod": "POST",
+   "parameters": {
+    "name": {
+     "type": "string",
+     "required": true,
+     "location": "path"
+    }
+   },
+   "parameterOrder": [
+    "name"
+   ],
+   "response": {
+    "$ref": "MyBean"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

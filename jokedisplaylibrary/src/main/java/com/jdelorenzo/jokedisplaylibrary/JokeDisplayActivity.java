@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 
 public class JokeDisplayActivity extends AppCompatActivity {
     public static final String ARG_JOKETEXT = "jokeText";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
