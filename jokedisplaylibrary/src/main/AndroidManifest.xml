@@ -3,6 +3,7 @@
     package="com.jdelorenzo.jokedisplaylibrary">
 
     <application
+        android:theme="@style/AppTheme"
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true">

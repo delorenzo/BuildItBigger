@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity implements OnJokeLoaded {
 
     public void tellJoke(View view){
         JokeTeller jokeTeller = new JokeTeller();
-        String jokeText = jokeTeller.getJoke();
-        Toast.makeText(this, jokeText, Toast.LENGTH_SHORT).show();
         loadingProgressBar.show();
         new RetrieveJokeTask(this).execute(this);
     }
