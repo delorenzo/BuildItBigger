@@ -1,15 +1,10 @@
 package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
-import com.google.api.client.http.HttpResponse;
-import com.jdelorenzo.jokedisplaylibrary.JokeDisplayActivity;
 import com.jdelorenzo.jokeendpoint.myApi.MyApi;
 
 import java.io.IOException;
@@ -27,18 +22,22 @@ public class RetrieveJokeTask extends AsyncTask<Context, Void, String> {
 
     @Override
     protected String doInBackground(Context... params) {
+        if (params.length == 0) return "";
         mContext = params[0];
         if (myApiService == null) {
-            MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
-                    new AndroidJsonFactory(), null)
-                    .setRootUrl(mContext.getString(R.string.localhost_endpoint_address))
-                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                        @Override
-                        public void initialize(AbstractGoogleClientRequest<?> request) throws IOException {
-                            //turn off compression when running against local devappserver
-                            request.setDisableGZipContent(true);
-                        }
-                    });
+            //uncomment these lines and comment below lines when deploying the endpoint locally
+//            MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
+//                    new AndroidJsonFactory(), null)
+//                    .setRootUrl(mContext.getString(R.string.localhost_endpoint_address))
+//                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+//                        @Override
+//                        public void initialize(AbstractGoogleClientRequest<?> request) throws IOException {
+//                            //turn off compression when running against local devappserver
+//                            request.setDisableGZipContent(true);
+//                        }
+//                    });
+            MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                    .setRootUrl(mContext.getString(R.string.deployed_endpoint_address));
             myApiService = builder.build();
         }
         try {
