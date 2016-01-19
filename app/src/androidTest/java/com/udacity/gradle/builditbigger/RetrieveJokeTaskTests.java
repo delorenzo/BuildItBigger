@@ -11,6 +11,8 @@ public class RetrieveJokeTaskTests extends InstrumentationTestCase implements On
     private static String jokeTextResult;
     private static boolean called;
     private CountDownLatch signal;
+    final String localEndpoint = "http://10.0.2.2:8080/_ah/api/";
+    final String testEndpoint = "https://jokeendpoint-1194.appspot.com/_ah/api/";
 
     @Override
     protected void setUp() throws Exception {
@@ -26,11 +28,24 @@ public class RetrieveJokeTaskTests extends InstrumentationTestCase implements On
     }
 
     public void testRetrieveJokeTask() throws InterruptedException {
-        new RetrieveJokeTask(this).execute("https://jokeendpoint-1194.appspot.com/_ah/api/");
+        new RetrieveJokeTask(this).execute(testEndpoint);
         signal.await(30, TimeUnit.SECONDS);
         assertTrue(called);
         assertNotNull(jokeTextResult);
         Boolean stringIsEmpty = jokeTextResult.equals("");
         assertFalse(stringIsEmpty);
     }
+
+    //this test will only pass if the local dev server is running!
+    public void testRetrieveJokeTaskLocal() throws InterruptedException {
+        new RetrieveJokeTask(this).executeLocal(localEndpoint);
+        signal.await(30, TimeUnit.SECONDS);
+        assertTrue(called);
+        assertNotNull(jokeTextResult);
+        Boolean stringIsEmpty = jokeTextResult.equals("");
+        assertFalse(stringIsEmpty);
+    }
+
+
+
 }

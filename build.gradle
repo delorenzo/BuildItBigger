@@ -18,6 +18,23 @@ allprojects {
     }
 }
 
-task execute(type:  JavaExec) {
-    
+
+task runAllTestsWithServer(dependsOn: ['startServer', 'build', 'test',
+                                       ':app:connectedCheck', ':app:check', ':jokelibrary:testClasses',
+                                       ':jokedisplaylibrary:check',
+                                       ':jokedisplaylibrary:connectedCheck',
+                                       ':jokeendpoint:appengineStop'], group: 'verification') << {
+//    tasks.appengineRun.setProperty("daemon", true)
+//    tasks.appengineRun.dependsOn('build')
+    tasks.connectedCheck.dependsOn('startServer')
+    tasks.connectedCheck.finalizedBy('appengineStop')
+}
+
+task startServer(dependsOn:  ":jokeendpoint:appengineRun") {
+    project(":jokeendpoint").afterEvaluate { backend ->
+        backend.extensions.appengine.daemon = true
+    }
+    doLast {
+        println "Started dev server."
+    }
 }
