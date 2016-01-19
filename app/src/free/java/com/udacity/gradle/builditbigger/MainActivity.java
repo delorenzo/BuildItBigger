@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements OnJokeLoaded {
         else {
             loadingProgressBar.show();
         }
-        new RetrieveJokeTask(this).execute(this);
+        new RetrieveJokeTask(this).execute(getString(R.string.deployed_endpoint_address));
     }
 
     public void onJokeLoaded(String jokeText) {
