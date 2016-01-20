@@ -7,4 +7,5 @@
     <string name="deployed_endpoint_address" translatable="false">https://jokeendpoint-1194.appspot.com/_ah/api/</string>
     <string name="joke_retrieval_failure_msg">Error returning joke.</string>
     <string name="joke_retrieval_failure_network">Unable to connect to the server.  Verify your connection.</string>
+    <string name="display_joke">Display Joke</string>
 </resources>

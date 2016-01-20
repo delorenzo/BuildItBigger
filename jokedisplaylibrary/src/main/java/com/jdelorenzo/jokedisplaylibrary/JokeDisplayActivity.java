@@ -13,6 +13,10 @@ public class JokeDisplayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         if (savedInstanceState == null && getIntent().getExtras() != null) {
             String jokeText = getIntent().getExtras().getString(ARG_JOKETEXT, "");
             setContentView(R.layout.activity_joke_display);
@@ -22,5 +26,15 @@ public class JokeDisplayActivity extends AppCompatActivity {
                     .add(R.id.display_joke_container, fragment)
                     .commit();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

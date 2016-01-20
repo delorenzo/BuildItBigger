@@ -20,6 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- declaring library activity in manifest to support up navigation -->
+        <activity
+            android:name="com.jdelorenzo.jokedisplaylibrary.JokeDisplayActivity"
+            android:label="@string/display_joke"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
     </application>
 
 </manifest>
