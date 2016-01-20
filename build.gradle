@@ -18,18 +18,10 @@ allprojects {
     }
 }
 
-
-task runAllTestsWithServer(dependsOn: ['startServer', 'build', 'test',
-                                       ':app:connectedCheck', ':app:check', ':jokelibrary:testClasses',
-                                       ':jokedisplaylibrary:check',
-                                       ':jokedisplaylibrary:connectedCheck',
-                                       ':jokeendpoint:appengineStop'], group: 'verification') << {
-//    tasks.appengineRun.setProperty("daemon", true)
-//    tasks.appengineRun.dependsOn('build')
-    tasks.connectedCheck.dependsOn('startServer')
-    tasks.connectedCheck.finalizedBy('appengineStop')
-}
-
+//have to make sure the appengineRun task is in daemon mode or it will hang, see
+//https://stackoverflow.com/questions/31434928/android-gradle-task-google-appengine
+//and
+//https://github.com/GoogleCloudPlatform/gradle-appengine-plugin#convention-properties
 task startServer(dependsOn:  ":jokeendpoint:appengineRun") {
     project(":jokeendpoint").afterEvaluate { backend ->
         backend.extensions.appengine.daemon = true
@@ -38,3 +30,18 @@ task startServer(dependsOn:  ":jokeendpoint:appengineRun") {
         println "Started dev server."
     }
 }
+
+task runAllTests(dependsOn: [':app:check', ':app:connectedCheck', ':jokelibrary:check',
+                             ':jokedisplaylibrary:connectedCheck', ':jokedisplaylibrary:check']) {
+    doLast {
+        println "Completed running tests."
+    }
+}
+
+task runAllTestsWithServer(dependsOn: ['startServer', 'runAllTests']) {
+    group = "verification"
+    mustRunAfter "startServer"
+    tasks.runAllTests.mustRunAfter "startServer"
+    finalizedBy ":jokeendpoint:appengineStop"
+}
+
