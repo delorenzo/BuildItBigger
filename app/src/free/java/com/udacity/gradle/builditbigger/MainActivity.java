@@ -1,5 +1,6 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements OnJokeLoaded {
             public void onAdClosed() {
                 super.onAdClosed();
                 requestNewInterstitialAd();
+                retrieveJoke();
             }
         });
         requestNewInterstitialAd();
@@ -71,8 +73,12 @@ public class MainActivity extends AppCompatActivity implements OnJokeLoaded {
             mInterstitialAd.show();
         }
         else {
-            loadingProgressBar.show();
+            retrieveJoke();
         }
+    }
+
+    private void retrieveJoke() {
+        loadingProgressBar.show();
         new RetrieveJokeTask(this).execute(getString(R.string.deployed_endpoint_address));
     }
 
@@ -82,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements OnJokeLoaded {
             if (mToast != null) {
                 mToast.cancel();
             }
-            mToast = Toast.makeText(this, getString(R.string.joke_retrieval_failure_msg), Toast.LENGTH_SHORT);
+            mToast = Toast.makeText(this, getString(R.string.joke_retrieval_failure_msg),
+                    Toast.LENGTH_SHORT);
             mToast.show();
         }
         Intent intent = new Intent(this, JokeDisplayActivity.class);
